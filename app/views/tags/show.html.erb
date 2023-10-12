@@ -1,0 +1,24 @@
+
+<div class="container py-5">
+  <div class="row d-flex justify-content-center align-items-center">
+    <div class="card shadow p-0 pb-5" style="border-radius: 8px;">
+      <div class="card-body px-5 pt-5">
+        <div class="card-title d-flex justify-content-start align-items-center mb-4">
+          <h2 style="margin-right: 16px;"><%= link_to 'Tags', tags_path %> / <%= @tag.name %></h2>
+          <%= link_to new_image_path, class: "btn btn-light shadow-sm rounded-circle" do %>
+            <i class="fa-solid fa-plus"></i>
+          <% end %>
+        </div>
+        <div class="container px-0">
+          <%= form_tag(tag_path(@tag), method: :get, class: 'd-flex justify-content-between align-items-center') do %>
+            <%= text_field_tag :keyword, params[:keyword], class: 'form-control border-0 shadow-sm', placeholder: 'Search', style: 'margin-right: 8px;', autocomplete: 'off' %>
+            <%= content_tag :button, class: 'btn btn-light shadow-sm rounded-4', type: 'submit', data: { turbo: false } do %>
+              <i class="fa-solid fa-magnifying-glass"></i>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <%= render "images/images_table", images: @images %>
+    </div>
+  </div>
+</div>

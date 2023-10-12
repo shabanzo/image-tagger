@@ -1,0 +1,63 @@
+<ul class="list-group list-group-flush border-top-0 mb-4">
+  <li class="list-group-item px-5 py-4">
+    <div class="container px-0">
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+          <% if params[:sort] == 'images.name DESC' %>
+            <%= link_to images_path(), class: 'sort-link' do %>
+              Name <i class="fa-solid fa-arrow-up-wide-short"></i>
+            <% end %>
+          <% else %>
+            <%= link_to images_path(sort: 'images.name DESC'), class: 'sort-link' do %>
+              Name <i class="fa-solid fa-arrow-down-wide-short"></i>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="col">Tags</div>
+        <div class="col">Total Tags</div>
+        <div class="col"></div>
+      </div>
+    </div>
+  </li>
+  <% images.each do |image| %>
+    <li class="list-group-item px-5 py-4">
+      <div class="container px-0">
+        <div class="row">
+          <div class="col-2">
+            <%= image_tag image.file, class:"img-thumbnail img-fluid p-0 border-0", style:"border-radius: 8px;", alt: "Image" %>
+          </div>
+          <div class="col">
+            <h5><%= image.name %></h5>
+            <p><%= (image.file.byte_size.to_f / 1_048_576).round(2) %>MB</p>
+          </div>
+          <div class="col d-grid gap-2 d-md-block">
+            <% image.tags.each do |tag| %>
+              <span class="badge bg-light shadow-sm p-2 mb-1"><%= tag.name %></span>
+            <% end %>
+          </div>
+          <div class="col"><%= image.tags.size %></div>
+          <div class="col">
+            <div class="btn-group">
+              <button class="btn btn-light btn-sm dropdown-toggle shadow-sm rounded-3" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Actions
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <%= link_to image_path(image) do %>
+                  <li class="dropdown-item" href="#">View</li>
+                <% end %>
+                <%= link_to edit_image_path(image) do %>
+                  <li class="dropdown-item">Edit</li>
+                <% end %>
+                <%= link_to image_path(image), method: :delete do %>
+                  <li class="dropdown-item" href="#">Delete</li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  <% end %>
+</ul>
+<%= paginate images %>

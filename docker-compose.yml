@@ -1,0 +1,56 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - tagger:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - ${PGADMIN_EXPOSED_PORT}:${PGADMIN_PORT}
+    depends_on:
+      - postgres
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - ${WEB_PORT}:${WEB_PORT}
+    depends_on:
+      - postgres
+    stdin_open: true
+    tty: true
+    command: "bundle exec rails s -p 3000 -b '0.0.0.0'"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      S3_BUCKET: ${S3_BUCKET}
+      AWS_REGION: ${AWS_REGION}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      AWS_SECRET_ACCESS: ${AWS_SECRET_ACCESS}
+      CLARIFAI_PAT: ${CLARIFAI_PAT}
+      CLARIFAI_USER_ID: ${CLARIFAI_USER_ID}
+      CLARIFAI_APP_ID: ${CLARIFAI_APP_ID}
+      CLARIFAI_MODEL_ID: ${CLARIFAI_MODEL_ID}
+
+volumes:
+  tagger:

@@ -1,0 +1,12 @@
+<%= form_with(model: tag) do |form| %>
+  <%= render "devise/shared/error_messages", resource: tag %>
+
+  <div class="form-outline mb-4 lh-1">
+    <%= form.label :name, class: "form-label" %>
+    <%= form.text_field :name, class: "form-control shadow-sm" %>
+  </div>
+
+  <div class="form-group d-flex justify-content-end">
+    <%= form.submit 'Create', class: "btn btn-dark bg-tagger" %>
+  </div>
+<% end %>

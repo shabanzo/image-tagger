@@ -1,0 +1,37 @@
+
+<div class="container py-5">
+  <div class="row d-flex justify-content-center align-items-center">
+    <div class="card shadow p-0 pb-5" style="border-radius: 8px;">
+      <div class="card-body px-5 pt-5">
+        <div class="card-title d-flex justify-content-start align-items-center mb-4">
+          <h2 style="margin-right: 16px;"><%= link_to 'Images', images_path %> / <%= @image.name %></h2>
+        </div>
+        <div class="container px-0">
+          <div class="row">
+            <div class="col-4">
+              <%= image_tag @image.file, class: "img-fluid p-0 border-0", style:"border-radius: 8px;", alt: "Image" %>
+            </div>
+            <div class="col">
+              <h5><%= @image.name %></h5>
+              <p><%= (@image.file.byte_size.to_f / 1_048_576).round(2) %>MB</p>
+              <div class="d-grid gap-3 d-md-block mb-4">
+                <%= link_to edit_image_path(@image), class: "btn btn-light p-2 rounded-2 shadow-sm border-0" do %>
+                  <i class="fa-solid fa-pen-to-square"></i> Edit
+                <% end %>
+                <%= link_to image_path(@image), method: :delete, class: "btn btn-light p-2 rounded-2 shadow-sm border-0" do %>
+                  <i class="fa-solid fa-trash"></i> Delete
+                <% end %>
+              </div>
+              <h5>Tags:</h5>
+              <div class="d-grid gap-3 d-md-block">
+                <% @image.tags.each do |tag| %>
+                  <span class="badge bg-light shadow-sm p-2 mb-1"><%= tag.name %></span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
